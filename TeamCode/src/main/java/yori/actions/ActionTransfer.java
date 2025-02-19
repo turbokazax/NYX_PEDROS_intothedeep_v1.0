@@ -107,7 +107,7 @@ public class ActionTransfer {
             case MOVE_INTAKE_UP_1: // 350?
 //                actionTimer.reset();
                 intake.updateArmState(Intake.ArmState.UP);
-                if (isTimeElapsed(500, voltage)) {
+                if (isTimeElapsed(200, voltage)) {
                     actionTimer.reset();
                     sequenceState = SequenceState.CLOSE_CLAW;
                 }
