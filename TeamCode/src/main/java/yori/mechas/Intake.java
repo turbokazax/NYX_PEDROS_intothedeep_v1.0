@@ -131,10 +131,6 @@ public class Intake {
 
 //        telemetry.addData("NEED_POPRAVKA?", NEED_PORPAVKA);
 
-        if(colorSensor.getDistance() >= 5.0){
-            rollerState = RollerState.EMPTY;
-        }
-
         switch(rollerState){
             case INTAKE:
                 leftIntakeRoller.set(1);
@@ -145,6 +141,7 @@ public class Intake {
                 }else if(colorSensor.getDistance() <= 2.4){
                     rollerState = RollerState.REJECT;
                 }
+
                 break;
             case HOLD:
                 armState = ArmState.UP;
@@ -158,11 +155,18 @@ public class Intake {
             case REJECT:
                 leftIntakeRoller.set(-1);
                 rightIntakeRoller.set(-1);
+                if(colorSensor.getDistance() >= 5.0){
+                    rollerState = RollerState.EMPTY;
+                }
+
                 break;
             case EMPTY:
                 NEED_PORPAVKA = false;
                 leftIntakeRoller.stopMotor();
                 rightIntakeRoller.stopMotor();
+                if (colorSensor.getDistance() <= 6) {
+                    rollerState = RollerState.INTAKE;
+                }
                 break;
         }
         telemetry.addData("ROLLER_STATE", rollerState);
