@@ -6,11 +6,13 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import yori.mechas.HorizSlides;
 import yori.mechas.Intake;
+import yori.mechas.Lift;
 import yori.mechas.Outtake;
 
 public class ActionTransfer {
     private Outtake outtake;
     private Intake intake;
+    private Lift lift;
     private HorizSlides horizSlides;
 
     private enum SequenceState {
@@ -28,6 +30,7 @@ public class ActionTransfer {
     public ActionTransfer(Outtake outtake, Intake intake, HorizSlides horizSlides) {
         this.outtake = outtake;
         this.intake = intake;
+        this.lift = lift;
         this.horizSlides = horizSlides;
         this.actionTimer = new ElapsedTime();
 //        this.voltage = voltage;
@@ -89,11 +92,7 @@ public class ActionTransfer {
                 intake.updateArmState(Intake.ArmState.UP);
                 outtake.updateWristTarget(0);
                 outtake.updateClawTarget(1);
-                if (isTimeElapsed(500, voltage)) {
-                    sequenceState = SequenceState.MOVE_OUTTAKE_DOWN;
-//                    actionElapsedTime = 0;
-                    actionTimer.reset();
-                }
+                lift.updateLiftTarget(0, 50);
                 break;
             case MOVE_OUTTAKE_DOWN: // delta = 200ms?
 //                outtake.updateGearTarget(1-GEAR_OFFSET);
