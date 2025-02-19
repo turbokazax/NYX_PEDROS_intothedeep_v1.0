@@ -48,9 +48,9 @@ public class ActionSpecimens {
         this.SPECI_GEAR_OFFEST = SPECI_GEAR_OFFEST;
     }
 
-    private int POSITION_SCORE_1 = 1400;
-    private int POSITION_SCORE_2 = 2500;
-    private double CLAW_RELEASE_TIMING_MS = 200; // ms
+    private int POSITION_SCORE_1;
+    private int POSITION_SCORE_2;
+//    private double CLAW_RELEASE_TIMING_MS = 200; // ms
 
     private double WRIST_OFFSET = 0;
 

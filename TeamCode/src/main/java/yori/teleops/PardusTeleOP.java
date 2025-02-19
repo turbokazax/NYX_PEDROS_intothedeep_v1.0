@@ -200,7 +200,7 @@ public class PardusTeleOP extends OpMode {
     }
 
     public static double deltaTime = 450;
-    public static double GEAR_OFFSET = 0.16;
+    public static double GEAR_OFFSET = 0.11;
     public static double SPECI_GEAR_OFFEST = 0.2;
 
     public static int POSITION_SCORE_1 = 1600; // 1750 // 2200
