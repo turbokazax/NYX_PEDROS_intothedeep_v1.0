@@ -151,6 +151,9 @@ public class Intake {
                 if(!correctColor && colorSensor.getDistance() <= 3.5){
                     rollerState = RollerState.REJECT;
                 }
+                if(colorSensor.getDistance() >= 5){
+                    rollerState = RollerState.INTAKE;
+                }
                 break;
             case REJECT:
                 leftIntakeRoller.set(-1);
