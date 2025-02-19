@@ -107,20 +107,6 @@ public class Intake {
     public void updateIntake(double voltage){
         boolean correctColor = colorSensor.updateColorSensor(alliance);
         colorSensor.showTelemetry(telemetry);
-//        if(scorerOp.wasJustPressed(GamepadKeys.Button.DPAD_UP)){
-//            if(armState == ArmState.DOWN){
-//                armState = ArmState.MIDDLE;
-//            }else if(armState == ArmState.MIDDLE){
-//                armState = ArmState.UP;
-//            }
-//        }
-//        if(scorerOp.wasJustPressed(GamepadKeys.Button.DPAD_DOWN)){
-//            if(armState == ArmState.MIDDLE){
-//                armState = ArmState.DOWN;
-//            }else if(armState == ArmState.UP){
-//                armState = ArmState.MIDDLE;
-//            }
-//        }
         //TODO: REMOVE AFTER TESTING
 
         switch(armState){
@@ -129,7 +115,7 @@ public class Intake {
                 rightArmTarget = 1;
                 break;
             case DOWN:
-                leftArmTarget = ARM_LOW_LIMIT;
+                leftArmTarget = ARM_LOW_LIMIT; // A.K.A GROUND CLEARANCE of the intake in lowest pos.
                 rightArmTarget = ARM_LOW_LIMIT;
                 break;
             case MIDDLE:
@@ -140,115 +126,28 @@ public class Intake {
         telemetry.addData("ARM POS", getArmPos());
         leftIntakeArm.setPosition(leftArmTarget);
         rightIntakeArm.setPosition(rightArmTarget);
-//        if(scorerOp.wasJustReleased(GamepadKeys.Button.DPAD_UP)){
-//            if(leftArmTarget <= 0 ){
-//                leftArmTarget += 1;
-//            }
-//            if(rightArmTarget <= 0 ){
-//                rightArmTarget += 1;
-//            }
-//        }
-//        if(scorerOp.wasJustReleased(GamepadKeys.Button.DPAD_DOWN)){
-//            if(leftArmTarget >= 0 ){
-//                leftArmTarget -= 1;
-//            }
-//            if(rightArmTarget >= 0 ){
-//                rightArmTarget -= 1;
-//            }
-//        }
-//        if(scorerOp.wasJustReleased(GamepadKeys.Button.X)){
-////            isIntakeActive = !isIntakeActive;
-//            rollerState = RollerState.INTAKE;
-//        }
-//        if(correctColor){
-//            rollerState = RollerState.HOLD;
-//        }else{
-//            if(colorSensor.getDistance() < 6.0){
-//                rollerState = RollerState.REJECT;
-//            }else{
-//                rollerState = RollerState.INTAKE;
-//            }
-//        }
-        telemetry.addData("NEED_POPRAVKA?", NEED_PORPAVKA);
+
+//        telemetry.addData("NEED_POPRAVKA?", NEED_PORPAVKA);
+
+        if(colorSensor.getDistance() >= 5.0){
+            rollerState = RollerState.EMPTY;
+        }
+
         switch(rollerState){
             case INTAKE:
                 leftIntakeRoller.set(1);
                 rightIntakeRoller.set(1);
-                //new:
                 armState = ArmState.DOWN;
-//                if(scorerOp.wasJustPressed(GamepadKeys.Button.X)){
-//                    rollerState = RollerState.HOLD;
-//                }
-                if(correctColor){
+                if(correctColor && colorSensor.getDistance() <= 2){
                     rollerState = RollerState.HOLD;
                 }else if(colorSensor.getDistance() <= 2.4){
                     rollerState = RollerState.REJECT;
                 }
-                NEED_PORPAVKA = true;
                 break;
             case HOLD:
-                double elapsedTime = popravlyalkaTimer.milliseconds() / 1000.0;
-                popravlyalkaTimer.reset();
-                armState = ArmState.UP; //new
-//                leftIntakeRoller.stopMotor();
-//                if(scorerOp.isDown(GamepadKeys.Button.LEFT_BUMPER)){
-//                    leftIntakeRoller.set(1);
-//                }else  if(scorerOp.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.5){
-//                    leftIntakeRoller.set(-1);
-//                }else {
-//                    leftIntakeRoller.stopMotor();
-//                }
-//                if(scorerOp.isDown(GamepadKeys.Button.RIGHT_BUMPER)){
-//                    rightIntakeRoller.set(1);
-//                }else if(scorerOp.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.5){
-//                    rightIntakeRoller.set(-1);
-//                }else{
-//                    rightIntakeRoller.stopMotor();
-//                }
-//                rightIntakeRoller.stopMotor();
-                //TODO:maybe remove
-//                if(scorerOp.wasJustPressed(GamepadKeys.Button.X)){
-//                    rollerState = RollerState.INTAKE;
-//                }
-
-//                if(colorSensor.getDistance() < 1.0){
-////                    if(LEFTporpavDeltaTime <= LEFT_PORPAV_TIME){
-////                        LEFTporpavDeltaTime += elapsedTime;
-////                        leftIntakeRoller.set(LEFT_POPRAV_POWER_1);
-////                        rightIntakeRoller.set(RIGHT_POPRAV_POWER_1);
-////                    }else{
-////                        if(RIGHTpopravDeltaTime <= RIGHT_POPRAV_TIME){
-////                            RIGHTpopravDeltaTime += elapsedTime;
-////                            rightIntakeRoller.set(RIGHT_POPRAV_POWER_2);
-////                            leftIntakeRoller.set(LEFT_POPRAV_POWER_2);
-////                        }else{
-////                            LEFTporpavDeltaTime = 0;
-////                            RIGHTpopravDeltaTime = 0;
-////                        }
-////                    }
-//                }
-//                if(NEED_PORPAVKA){
-//                    if(LEFTporpavDeltaTime <= LEFT_PORPAV_TIME){
-//                        LEFTporpavDeltaTime += elapsedTime;
-//                        leftIntakeRoller.set(LEFT_POPRAV_POWER_1);
-//                        rightIntakeRoller.set(RIGHT_POPRAV_POWER_1);
-//                    }else{
-//                        if(RIGHTpopravDeltaTime <= RIGHT_POPRAV_TIME){
-//                            RIGHTpopravDeltaTime += elapsedTime;
-//                            rightIntakeRoller.set(RIGHT_POPRAV_POWER_2);
-//                            leftIntakeRoller.set(LEFT_POPRAV_POWER_2);
-//                        }else{
-//                            LEFTporpavDeltaTime = 0;
-//                            RIGHTpopravDeltaTime = 0;
-//                            NEED_PORPAVKA = false;
-//                        }
-//                    }
-//                }
-                if(colorSensor.getDistance() < 1.5){
+                armState = ArmState.UP;
+                if(colorSensor.getDistance() <= 2){
                     actionPopravka.update(telemetry, voltage);
-                }
-                if(colorSensor.getDistance() > 5.0){
-                    rollerState = RollerState.EMPTY;
                 }
                 if(!correctColor && colorSensor.getDistance() <= 3.5){
                     rollerState = RollerState.REJECT;
@@ -257,42 +156,13 @@ public class Intake {
             case REJECT:
                 leftIntakeRoller.set(-1);
                 rightIntakeRoller.set(-1);
-                if(colorSensor.getDistance() > 5.0){
-                    rollerState = RollerState.INTAKE;
-                }
                 break;
             case EMPTY:
                 NEED_PORPAVKA = false;
                 leftIntakeRoller.stopMotor();
                 rightIntakeRoller.stopMotor();
-//                if(scorerOp.wasJustPressed(GamepadKeys.Button.X)){
-//                    rollerState = RollerState.INTAKE;
-//                }
                 break;
         }
-//        if(scorerOp.wasJustPressed(GamepadKeys.Button.A)){
-//            isIntakeReversed = !isIntakeReversed;
-//        }
-//        if(isIntakeActive){
-//            if(!isIntakeReversed){
-//                leftIntakeRoller.setInverted(false);
-//                rightIntakeRoller.setInverted(true);
-//            }else{
-//                leftIntakeRoller.setInverted(true);
-//                rightIntakeRoller.setInverted(false);
-//            }
-//            leftIntakeRoller.set(1);
-//            rightIntakeRoller.set(1);
-//        }else{
-//            leftIntakeRoller.stopMotor();
-//            rightIntakeRoller.stopMotor();
-//        }
-
-//        telemetry.addData("isIntakeActive", isIntakeActive);
-//        telemetry.addData("leftArmTarget", leftArmTarget);
-//        telemetry.addData("leftArmREALPOS", leftIntakeArm.getPosition());
-//        telemetry.addData("rightArmREALPOS", rightIntakeArm.getPosition());
-//        telemetry.addData("rightArtmTarget", rightArmTarget);
         telemetry.addData("ROLLER_STATE", rollerState);
     }
 
