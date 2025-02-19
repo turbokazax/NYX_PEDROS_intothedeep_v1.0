@@ -2,6 +2,7 @@ package yori.mechas;
 
 import static yori.teleops.PardusTeleOP.alliance;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.hardware.ServoEx;
@@ -14,13 +15,14 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import yori.actions.ActionPopravka;
 import yori.sensors.ColorSensor;
 
+@Config
 public class Intake {
     private ServoEx leftIntakeArm;
     private ServoEx rightIntakeArm;
     private CRServo leftIntakeRoller;
     private CRServo rightIntakeRoller;
-    private double leftArmTarget;
-    private double rightArmTarget;
+    public static double leftArmTarget;
+    public static double rightArmTarget;
     public enum ArmState{
         DOWN,
         MIDDLE,
@@ -97,7 +99,7 @@ public class Intake {
     }
 
     private ActionPopravka actionPopravka;
-    private double ARM_LOW_LIMIT = 0;
+    private double ARM_LOW_LIMIT = 0.5;
     public void setArmLowerLimit(double lowerLimit){
         this.ARM_LOW_LIMIT = lowerLimit;
     }
