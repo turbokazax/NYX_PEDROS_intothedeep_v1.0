@@ -18,13 +18,10 @@ public class ActionPopravka {
 
     private enum SequenceState{
         ROLL_IN,
-
-        PAUSE,
         DISABLED
-
     }
 
-    private SequenceState sequenceState = SequenceState.PAUSE;
+    private SequenceState sequenceState = SequenceState.DISABLED;
 
     private double actionElapsedTime = 0;
     private boolean isTimeElapsed(double time, double voltage) {
@@ -33,28 +30,20 @@ public class ActionPopravka {
         return actionElapsedTime >= time * (12.0 / voltage);
     }
 
-    public void disable(){
-        this.sequenceState = SequenceState.DISABLED;
-    }
-
-    private SequenceState previousSequenceState;
-
     public void update(Telemetry telemetry, double voltage){
-        if(sequenceState == SequenceState.PAUSE){
+        if(sequenceState == SequenceState.DISABLED){
             sequenceState = SequenceState.ROLL_IN;
             actionTimer.reset();
         }
         switch(sequenceState){
             case ROLL_IN:
-                previousSequenceState = SequenceState.PAUSE;
                 leftIntakeRoller.set(1);
                 rightIntakeRoller.set(1);
                 if(isTimeElapsed(300, voltage)){
-                    sequenceState = SequenceState.PAUSE;
+                    sequenceState = SequenceState.DISABLED;
                 }
                 break;
-            case PAUSE:
-                previousSequenceState = SequenceState.ROLL_IN;
+            case DISABLED:
                 leftIntakeRoller.stopMotor();
                 rightIntakeRoller.stopMotor();
                 if(isTimeElapsed(150, voltage)){

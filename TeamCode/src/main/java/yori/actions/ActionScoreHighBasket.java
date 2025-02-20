@@ -35,11 +35,6 @@ public class ActionScoreHighBasket {
         return actionElapsedTime >= time * (12.0 / voltage);
     }
 
-    public boolean isActive(){
-        return sequenceState != SequenceState.DISABLED;
-    }
-    
-
     public void update(GamepadEx scorerOp, Telemetry telemetry, double voltage){
         if(scorerOp.wasJustPressed(GamepadKeys.Button.A) && sequenceState == SequenceState.DISABLED){
             actionTimer.reset();
