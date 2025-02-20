@@ -4,7 +4,6 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.Pose;
-import com.pedropathing.pathgen.BezierCurve;
 import com.pedropathing.pathgen.BezierLine;
 import com.pedropathing.pathgen.Path;
 import com.pedropathing.pathgen.PathChain;
@@ -17,8 +16,8 @@ import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
-import yori.AUTOOO.actions_auto.ActionIntakeInChamber;
-import yori.AUTOOO.actions_auto.ActionTransfer;
+import yori.AUTOOO.actions_auto.AutoActionIntakeInChamber;
+import yori.AUTOOO.actions_auto.AutoActionTransfer;
 import yori.mechas.HorizSlides;
 import yori.mechas.Intake;
 import yori.mechas.Outtake;
@@ -34,8 +33,8 @@ public class TEST extends OpMode {
     private Outtake outtake;
 
     // Actions
-    private ActionTransfer actionTransfer;
-    private ActionIntakeInChamber actionIntakeInChamber;
+    private AutoActionTransfer autoActionTransfer;
+    private AutoActionIntakeInChamber autoActionIntakeInChamber;
 
     /** Define Poses **/
     private final Pose startPose = new Pose(8.354, 101.635, Math.toRadians(0));
@@ -63,8 +62,8 @@ public class TEST extends OpMode {
         intake = new Intake(hardwareMap, telemetry);
         outtake = new Outtake(hardwareMap);
         horizSlides = new HorizSlides(hardwareMap);
-        actionTransfer = new ActionTransfer(outtake, intake, horizSlides);
-        actionIntakeInChamber = new ActionIntakeInChamber(intake, horizSlides, outtake);
+        autoActionTransfer = new AutoActionTransfer(outtake, intake, horizSlides);
+        autoActionIntakeInChamber = new AutoActionIntakeInChamber(intake, horizSlides, outtake);
 
         buildPaths();
     }
@@ -96,8 +95,8 @@ public class TEST extends OpMode {
                 break;
             case 1:
                 if (!follower.isBusy()) {
-                    actionIntakeInChamber.setSequenceState(ActionIntakeInChamber.SequenceState.HORIZ_MID);
-                    if (actionTransfer.isTransferRunning()) {
+                    autoActionIntakeInChamber.setSequenceState(AutoActionIntakeInChamber.SequenceState.HORIZ_MID);
+                    if (autoActionTransfer.isTransferRunning()) {
                         setPathState(2);
                     }
                 }
@@ -124,8 +123,8 @@ public class TEST extends OpMode {
     }
 
     private void updateActions() {
-        actionTransfer.update(telemetry, getBatteryVoltage());
-        actionIntakeInChamber.update(telemetry, getBatteryVoltage(), actionTransfer);
+        autoActionTransfer.update(telemetry, getBatteryVoltage());
+        autoActionIntakeInChamber.update(telemetry, getBatteryVoltage(), autoActionTransfer);
     }
 
     private void updateMechas(){

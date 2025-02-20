@@ -1,6 +1,5 @@
 package yori.AUTOOO.actions_auto;
 
-import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -9,7 +8,7 @@ import yori.mechas.HorizSlides;
 import yori.mechas.Intake;
 import yori.mechas.Outtake;
 
-public class ActionTransfer {
+public class AutoActionTransfer {
     private Outtake outtake;
     private Intake intake;
     private HorizSlides horizSlides;
@@ -28,7 +27,7 @@ public class ActionTransfer {
     }
     private static SequenceState sequenceState = SequenceState.DISABLED;
 
-    public ActionTransfer(Outtake outtake, Intake intake, HorizSlides horizSlides) {
+    public AutoActionTransfer(Outtake outtake, Intake intake, HorizSlides horizSlides) {
         this.outtake = outtake;
         this.intake = intake;
         this.horizSlides = horizSlides;

@@ -45,7 +45,7 @@ public class ActionIntakeInChamber_og {
         return actionElapsedTime >= time * (12.0 / voltage);
     }
 
-//    private ActionTransfer actionTransfer = new ActionTransfer(outtake, intake, horizSlides);
+//    private AutoActionTransfer actionTransfer = new AutoActionTransfer(outtake, intake, horizSlides);
     SequenceState prevState = SequenceState.DISABLED;
 
     public void update(GamepadEx scorerOp, Telemetry telemetry, double voltage, ActionTransfer actionTransfer) {

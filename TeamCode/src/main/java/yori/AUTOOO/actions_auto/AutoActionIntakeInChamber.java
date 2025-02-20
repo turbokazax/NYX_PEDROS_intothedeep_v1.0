@@ -2,8 +2,6 @@ package yori.AUTOOO.actions_auto;
 
 import static yori.actions.ActionTransfer.GEAR_OFFSET;
 
-import com.arcrobotics.ftclib.gamepad.GamepadEx;
-import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -12,14 +10,14 @@ import yori.mechas.HorizSlides;
 import yori.mechas.Intake;
 import yori.mechas.Outtake;
 
-public class ActionIntakeInChamber {
+public class AutoActionIntakeInChamber {
     private Intake intake;
     private HorizSlides horizSlides;
     private Outtake outtake;
 
     private ElapsedTime actionTimer;
 
-    public ActionIntakeInChamber(Intake intake, HorizSlides horizSlides, Outtake outtake) {
+    public AutoActionIntakeInChamber(Intake intake, HorizSlides horizSlides, Outtake outtake) {
         this.intake = intake;
         this.horizSlides = horizSlides;
         this.outtake = outtake;
@@ -47,13 +45,13 @@ public class ActionIntakeInChamber {
         return actionElapsedTime >= time * (12.0 / voltage);
     }
 
-    //    private ActionTransfer actionTransfer = new ActionTransfer(outtake, intake, horizSlides);
+    //    private AutoActionTransfer actionTransfer = new AutoActionTransfer(outtake, intake, horizSlides);
     SequenceState prevState = SequenceState.DISABLED;
 
     public void setSequenceState(SequenceState sequenceState) {
         this.sequenceState = sequenceState;
     }
-    public void update(Telemetry telemetry, double voltage, ActionTransfer actionTransfer) {
+    public void update(Telemetry telemetry, double voltage, AutoActionTransfer autoActionTransfer) {
         if (sequenceState == SequenceState.DISABLED) {
             sequenceState = SequenceState.HORIZ_ZERO;
             actionTimer.reset();
@@ -64,7 +62,7 @@ public class ActionIntakeInChamber {
                 horizSlides.setAllowManualInput(false);
                 if (horizSlides.updateHorizTarget(0, 20)) {
                     if (intake.getRollerState() == Intake.RollerState.HOLD) {
-                        actionTransfer.runOnce(intake.getArmState());
+                        autoActionTransfer.runOnce(intake.getArmState());
                     }
                 }
                 break;
