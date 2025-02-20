@@ -77,6 +77,22 @@ public class ActionTransfer {
         this.willDoInertiaSpitForSpecimen = willDoInertiaSpitForSpecimen;
     }
 
+    public void updateTimings(double... timings){
+        STEP_1_TIMING = timings[0];
+        STEP_2_TIMING = timings[1];
+        STEP_3_TIMING = timings[2];
+        STEP_4_TIMING = timings[3];
+        STEP_5_TIMING = timings[4];
+        STEP_6_TIMING = timings[5];
+    }
+
+    private double STEP_1_TIMING = 500; // ms
+    private double STEP_2_TIMING = 1;
+    private double STEP_3_TIMING = 200;
+    private double STEP_4_TIMING = 250;
+    private double STEP_5_TIMING = 200;
+    private double STEP_6_TIMING = 400;
+
     public void update(GamepadEx scorerOp, Telemetry telemetry, double voltage) {
 //        telemetry.addData("Elapsed Time", actionElapsedTime);
 //        if (scorerOp.wasJustPressed(GamepadKeys.Button.Y) && sequenceState == SequenceState.DISABLED) {
@@ -89,7 +105,7 @@ public class ActionTransfer {
                 intake.updateArmState(Intake.ArmState.UP);
                 outtake.updateWristTarget(0);
                 outtake.updateClawTarget(1);
-                if (isTimeElapsed(500, voltage)) {
+                if (isTimeElapsed(STEP_1_TIMING, voltage)) {
                     sequenceState = SequenceState.MOVE_OUTTAKE_DOWN;
 //                    actionElapsedTime = 0;
                     actionTimer.reset();
@@ -99,7 +115,7 @@ public class ActionTransfer {
 //                outtake.updateGearTarget(1-GEAR_OFFSET);
 //                outtake.updateWristTarget(0);
 //                outtake.updateClawTarget(1);
-                if (isTimeElapsed(1, voltage)) {
+                if (isTimeElapsed(STEP_2_TIMING, voltage)) {
                     sequenceState = SequenceState.MOVE_INTAKE_UP_1;
 //                    actionElapsedTime = 0;
                     actionTimer.reset();
@@ -108,7 +124,7 @@ public class ActionTransfer {
             case MOVE_INTAKE_UP_1: // 350?
 //                actionTimer.reset();
                 intake.updateArmState(Intake.ArmState.UP);
-                if (isTimeElapsed(200, voltage)) {
+                if (isTimeElapsed(STEP_3_TIMING, voltage)) {
                     actionTimer.reset();
                     sequenceState = SequenceState.CLOSE_CLAW;
                 }
@@ -116,14 +132,14 @@ public class ActionTransfer {
             case CLOSE_CLAW: //delta = 250ms;
                 outtake.updateClawTarget(0.5);
 //                sequenceState = SequenceState.INTAKE_RELEASE_SAMPLE;
-                if (isTimeElapsed(250, voltage)) {
+                if (isTimeElapsed(STEP_4_TIMING, voltage)) {
                     actionTimer.reset();
                     sequenceState = SequenceState.INTAKE_RELEASE_SAMPLE;
                 }
                 break;
             case INTAKE_RELEASE_SAMPLE: //delta = 200ms;
                 intake.updateRollerState(Intake.RollerState.REJECT);
-                if (isTimeElapsed(1, voltage)) {
+                if (isTimeElapsed(STEP_5_TIMING, voltage)) {
                     actionTimer.reset();
                     sequenceState = SequenceState.MOVE_OUTTAKE_UP_SCORING;
                 }
@@ -131,7 +147,7 @@ public class ActionTransfer {
             case MOVE_OUTTAKE_UP_SCORING: //delta = 300ms?
                 outtake.updateGearTarget(0.5); // remove 1, set 0.5 so arm at 90 deg.
                 outtake.updateWristTarget(0.15);
-                if (isTimeElapsed(400, voltage)) {
+                if (isTimeElapsed(STEP_6_TIMING, voltage)) {
                     if(willDoInertiaSpitForSpecimen){
                         outtake.updateClawTarget(1);
                         outtake.updateGearTarget(0.35);

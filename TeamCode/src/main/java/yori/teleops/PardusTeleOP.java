@@ -208,9 +208,20 @@ public class PardusTeleOP extends OpMode {
     public static int POSITION_SCORE_2 = 2500;  // 2500
 //    public static int CLAW_RELEASE_TIMING_MS = 200; //???
     public static double WRIST_OFFSET = 0.1;
+
+    // transfer timings:
+    public static double TRFER_STEP_1_TIMING = 500; // MOVE_INTAKE_DOWN_1
+    public static double TRFER_STEP_2_TIMING = 1; // MOVE_OUTTAKE_DOWN
+    public static double TRFER_STEP_3_TIMING = 200; // MOVE_INTAKE_UP_1
+    public static double TRFER_STEP_4_TIMING = 250; // CLOSE_CLAW
+    public static double TRFER_STEP_5_TIMING = 200; // INTAKE_RELEASE_SAMPLE
+    public static double TRFER_STEP_6_TIMING = 400; // MOVE_INTAKE_UP_2
+
     private void updateActions() {
         actionTransfer.update(scorerOp, telemetry, getBatteryVoltage());
         actionTransfer.updateConstants(GEAR_OFFSET);
+        actionTransfer.updateTimings(TRFER_STEP_1_TIMING, TRFER_STEP_2_TIMING, TRFER_STEP_3_TIMING,
+                TRFER_STEP_4_TIMING, TRFER_STEP_5_TIMING, TRFER_STEP_6_TIMING);
 //        actionTransfer.updateDeltaTime(deltaTime);
         actionSpecimens.update(scorerOp, telemetry, getBatteryVoltage());
         actionSpecimens.setSPECI_GEAR_OFFEST(SPECI_GEAR_OFFEST);

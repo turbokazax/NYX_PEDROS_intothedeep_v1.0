@@ -89,7 +89,7 @@ public class HorizSlides {
         horizPos = horizMotor.getCurrentPosition();
         double power = horizPID.calculate(horizPos, horizTarget);
 //        horizMotor.set(power);
-        if (horizTarget == 0 && Math.abs(horizPos - 0) <= 100) {
+        if (horizTarget == 0 && Math.abs(horizPos - 0) <= 50) {
             horizPos = 0;
 //            horizTarget = -100000000;
             horizMotor.set(HORIZ_ANTITENSION_POWER_ZERO);
