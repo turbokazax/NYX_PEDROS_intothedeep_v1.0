@@ -115,7 +115,7 @@ public class ColorSensor {
     private yori.utils.Color getMostPrevalentColor(){
         distance = ((DistanceSensor) colorSensor).getDistance(DistanceUnit.CM);
         if (distance <= INTAKE_HOLD_TRIGGER_DISTANCE) {
-            if (hsvValues[0] >= 0 && hsvValues[0] < 45 || hsvValues[0] >= 330 && hsvValues[0] < 360) {
+            if (hsvValues[0] >= 0 && hsvValues[0] < 30 || hsvValues[0] >= 330 && hsvValues[0] < 360) {
                 return yori.utils.Color.RED;
             } else if (hsvValues[0] >= 45 && hsvValues[0] <= 120) {
                 return yori.utils.Color.YELLOW;

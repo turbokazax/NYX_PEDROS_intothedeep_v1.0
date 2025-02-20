@@ -65,15 +65,18 @@ public class HorizSlides {
         hkI = PardusTeleOP.HORIZ_KI;
         hkD = PardusTeleOP.HORIZ_KD;
         horizPID.setPID(hKP, hkI, hkD);
-        double lt = scorerOp.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER);
-        double rt = scorerOp.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER);
+//        double lt = scorerOp.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER);
+//        double rt = scorerOp.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER);
+        double inpt= scorerOp.getLeftY();
+//        double rt = scorerOp.getRightY();
         double input = 0;
         if(allowManualInput){
-            if (lt > 0.6) {
-                input = 1;
-            } else if (rt > 0.6) {
-                input = -1;
-            }
+//            if (lt > 0.6) {
+//                input = 1;
+//            } else if (rt > 0.6) {
+//                input = -1;
+//            }
+            input = inpt;
         }
         horizTarget += elapsedTime * input * HORIZ_SPEED;
         if (horizTarget < HORIZ_MIN_LIMIT) {
@@ -95,8 +98,8 @@ public class HorizSlides {
         }
         telemetry.addData("HORIZ_POS:", horizPos);
         telemetry.addData("HORIZ_TARGET:", horizTarget);
-        telemetry.addData("LT:", lt);
-        telemetry.addData("RT:", rt);
+        telemetry.addData("HORIZ_INPUT_MANUAL:", inpt);
+//        telemetry.addData("RT:", rt);
         telemetry.addData("HORIZ_POWER:", power);
         telemetry.addData("ALL0W_MANUAL", allowManualInput);
     }
