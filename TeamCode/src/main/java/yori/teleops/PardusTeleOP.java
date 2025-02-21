@@ -200,7 +200,7 @@ public class PardusTeleOP extends OpMode {
     }
 
     public static double deltaTime = 450;
-    public static double GEAR_OFFSET = 0.168
+    public static double GEAR_OFFSET = 0.17
             ;
     public static double SPECI_GEAR_OFFEST = 0.2;
 
@@ -233,7 +233,7 @@ public class PardusTeleOP extends OpMode {
     public static double RIGHT_POPRAV_POWER_1 = -0.5;
     public static double LEFT_POPRAV_POWER_2 = 0.5;
     public static double RIGHT_POPRAV_POWER_2 = -0.5;
-    public static double INTAKE_ARM_LOWER_LIMI = 0.5;
+    public static double INTAKE_ARM_LOWER_LIMI = 0;
     private void updateIntake() {
 //        intake.updateIntake(scorerOp, correctColor);
 //        intake.updateTargets();

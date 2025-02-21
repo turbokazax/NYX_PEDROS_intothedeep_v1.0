@@ -25,7 +25,7 @@ public class Intake {
     public static double rightArmTarget;
     public static double INTAKE_ARM_MID = 0.2;
 
-    public static double INTAKE_ARM_UP = 0.4;
+    public static double INTAKE_ARM_UP = 0.48;
 
     public enum ArmState{
         DOWN,
