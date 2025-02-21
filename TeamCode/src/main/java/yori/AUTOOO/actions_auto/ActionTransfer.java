@@ -23,7 +23,9 @@ public class ActionTransfer {
         MOVE_OUTTAKE_UP_SCORING,
         DISABLED
     }
-
+    public boolean isTransferRunning(){
+        return sequenceState != SequenceState.DISABLED;
+    }
     private static SequenceState sequenceState = SequenceState.DISABLED;
 
     public ActionTransfer(Outtake outtake, Intake intake, HorizSlides horizSlides) {
@@ -51,30 +53,9 @@ public class ActionTransfer {
 
     private double deltaTime = 3000;
     public static double GEAR_OFFSET = 0;
-    public static double GEAR_MIDDLE = 0;
-    public static double GEAR_TARGET_INERTIA_1 = 0;
-    public static double GEAR_TARGET_INERTIA_2 = 0;
-    public static int TRANSFER_TIMER_0 = 0;
-    public static int TRANSFER_TIMER_1 = 0;
-    public static int TRANSFER_TIMER_2 = 0;
-    public static int TRANSFER_TIMER_3 = 0;
-    public static double GEAR_TARGET_TRANSFER = 0;
-    public static double GEAR_TARGET_HB = 0;
-    public static int INERTIA_TIMER_1 = 0;
-    public static double WRIST_TARGET_TRANSFER = 0;
-    public void updateConstants(double GEAR_OFFSET,double GEAR_MIDDLE,double GEAR_TARGET_INERTIA_1, double GEAR_TARGET_INERTIA_2, int TRANSFER_TIMER_0, int TRANSFER_TIMER_1, int TRANSFER_TIMER_2, int TRANSFER_TIMER_3, double GEAR_TARGET_TRANSFER, double GEAR_TARGET_HB, int INERTIA_TIMER_1, double WRIST_TRANSFER_TARGET) {
-        this.GEAR_OFFSET = GEAR_OFFSET;
-        this.GEAR_MIDDLE = GEAR_MIDDLE;
-        this.GEAR_TARGET_INERTIA_1 = GEAR_TARGET_INERTIA_1;
-        this.GEAR_TARGET_INERTIA_2 = GEAR_TARGET_INERTIA_2;
-        this.TRANSFER_TIMER_0 = TRANSFER_TIMER_0;
-        this.TRANSFER_TIMER_1 = TRANSFER_TIMER_1;
-        this.TRANSFER_TIMER_2 = TRANSFER_TIMER_2;
-        this.TRANSFER_TIMER_3 = TRANSFER_TIMER_3;
-        this.GEAR_TARGET_TRANSFER = GEAR_TARGET_TRANSFER;
-        this.GEAR_TARGET_HB = GEAR_TARGET_HB;
-        this.INERTIA_TIMER_1 = INERTIA_TIMER_1;
-        this.WRIST_TARGET_TRANSFER = WRIST_TRANSFER_TARGET;
+
+    public void updateConstants(double... consts) {
+        this.GEAR_OFFSET = consts[0];
     }
 
     public void updateDeltaTime(double deltaTime) {
@@ -99,7 +80,7 @@ public class ActionTransfer {
         this.willDoInertiaSpitForSpecimen = willDoInertiaSpitForSpecimen;
     }
 
-    public void update(GamepadEx scorerOp, Telemetry telemetry, double voltage) {
+    public void update(Telemetry telemetry, double voltage) {
 //        telemetry.addData("Elapsed Time", actionElapsedTime);
 //        if (scorerOp.wasJustPressed(GamepadKeys.Button.Y) && sequenceState == SequenceState.DISABLED) {
 //        if(sequenceState == SequenceState.DISABLED){
@@ -109,9 +90,9 @@ public class ActionTransfer {
         switch (sequenceState) {
             case MOVE_INTAKE_DOWN_1: // delta = 200ms?
                 intake.updateArmState(Intake.ArmState.UP);
-                outtake.updateWristTarget(WRIST_TARGET_TRANSFER);
+                outtake.updateWristTarget(0);
                 outtake.updateClawTarget(1);
-                if (isTimeElapsed(TRANSFER_TIMER_0, voltage)) {
+                if (isTimeElapsed(500, voltage)) {
                     sequenceState = SequenceState.MOVE_OUTTAKE_DOWN;
 //                    actionElapsedTime = 0;
                     actionTimer.reset();
@@ -130,7 +111,7 @@ public class ActionTransfer {
             case MOVE_INTAKE_UP_1: // 350?
 //                actionTimer.reset();
                 intake.updateArmState(Intake.ArmState.UP);
-                if (isTimeElapsed(TRANSFER_TIMER_1, voltage)) {
+                if (isTimeElapsed(500, voltage)) {
                     actionTimer.reset();
                     sequenceState = SequenceState.CLOSE_CLAW;
                 }
@@ -138,7 +119,7 @@ public class ActionTransfer {
             case CLOSE_CLAW: //delta = 250ms;
                 outtake.updateClawTarget(0.5);
 //                sequenceState = SequenceState.INTAKE_RELEASE_SAMPLE;
-                if (isTimeElapsed(TRANSFER_TIMER_2, voltage)) {
+                if (isTimeElapsed(250, voltage)) {
                     actionTimer.reset();
                     sequenceState = SequenceState.INTAKE_RELEASE_SAMPLE;
                 }
@@ -151,15 +132,15 @@ public class ActionTransfer {
                 }
                 break;
             case MOVE_OUTTAKE_UP_SCORING: //delta = 300ms?
-                outtake.updateGearTarget(GEAR_MIDDLE); // remove 1, set 0.5 so arm at 90 deg.
+                outtake.updateGearTarget(0.5); // remove 1, set 0.5 so arm at 90 deg.
                 outtake.updateWristTarget(0.15);
-                if (isTimeElapsed(TRANSFER_TIMER_3, voltage)) {
+                if (isTimeElapsed(400, voltage)) {
                     if(willDoInertiaSpitForSpecimen){
                         outtake.updateClawTarget(1);
-                        outtake.updateGearTarget(GEAR_TARGET_INERTIA_1);
+                        outtake.updateGearTarget(0.35);
                         outtake.updateWristTarget(0);
-                        if(isTimeElapsed(450, voltage)){
-                            outtake.updateGearTarget(GEAR_MIDDLE);
+                        if(isTimeElapsed(650, voltage)){
+                            outtake.updateGearTarget(0.5);
                             outtake.updateWristTarget(0.15);
                         }
                     }else{

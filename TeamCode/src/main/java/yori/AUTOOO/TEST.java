@@ -46,29 +46,6 @@ public class TEST extends OpMode {
     private Path path1;
     private PathChain line2;
 
-    @Override
-    public void init() {
-        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-        Constants.setConstants(FConstants.class, LConstants.class);
-        follower = new Follower(hardwareMap);
-        follower.setStartingPose(startPose);
-
-        pathTimer = new Timer();
-        pathTimer.resetTimer();
-        actionTimer = new Timer();
-        actionTimer.resetTimer();
-        opModeTimer = new Timer();
-        opModeTimer.resetTimer();
-
-        intake = new Intake(hardwareMap, telemetry);
-        outtake = new Outtake(hardwareMap);
-        horizSlides = new HorizSlides(hardwareMap);
-        actionTransfer = new ActionTransfer(outtake, intake, horizSlides);
-        actionIntakeInChamber = new ActionIntakeInChamber(intake, horizSlides, outtake);
-
-        buildPaths();
-    }
-
     /** Build the paths for the auto **/
     public void buildPaths() {
         path1 = new Path(new BezierLine(new Point(startPose), new Point(midPose)));
@@ -121,6 +98,29 @@ public class TEST extends OpMode {
         telemetry.addData("y", follower.getPose().getY());
         telemetry.addData("heading", follower.getPose().getHeading());
         telemetry.update();
+    }
+
+    @Override
+    public void init() {
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+        Constants.setConstants(FConstants.class, LConstants.class);
+        follower = new Follower(hardwareMap);
+        follower.setStartingPose(startPose);
+
+        pathTimer = new Timer();
+        pathTimer.resetTimer();
+        actionTimer = new Timer();
+        actionTimer.resetTimer();
+        opModeTimer = new Timer();
+        opModeTimer.resetTimer();
+
+        intake = new Intake(hardwareMap, telemetry);
+        outtake = new Outtake(hardwareMap);
+        horizSlides = new HorizSlides(hardwareMap);
+        actionTransfer = new ActionTransfer(outtake, intake, horizSlides);
+        actionIntakeInChamber = new ActionIntakeInChamber(intake, horizSlides, outtake);
+
+        buildPaths();
     }
 
     private void updateActions() {

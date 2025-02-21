@@ -1,9 +1,5 @@
 package yori.AUTOOO.actions_auto;
 
-import static yori.actions.ActionTransfer.GEAR_MIDDLE;
-import static yori.actions.ActionTransfer.GEAR_TARGET_INERTIA_2;
-import static yori.actions.ActionTransfer.INERTIA_TIMER_1;
-
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -52,13 +48,13 @@ public class ActionInertiaSpit {
                 }
                 break;
             case DVA:
-                outtake.updateGearTarget(GEAR_TARGET_INERTIA_2);
+                outtake.updateGearTarget(0);
                 outtake.updateWristTarget(1);
-                if(isTimeElapsed(INERTIA_TIMER_1, voltage)){
+                if(isTimeElapsed(200, voltage)){
                     outtake.updateClawTarget(1);
                     outtake.updateWristTarget(0);
                     if(isTimeElapsed(350, voltage)){
-                        outtake.updateGearTarget(GEAR_MIDDLE);
+                        outtake.updateGearTarget(0.5);
                         outtake.updateWristTarget(0.15);
                         actionTimer.reset();
                         sequenceState = SequenceState.DISABLED;
