@@ -23,6 +23,10 @@ public class Intake {
     private CRServo rightIntakeRoller;
     public static double leftArmTarget;
     public static double rightArmTarget;
+    public static double INTAKE_ARM_MID = 0.2;
+
+    public static double INTAKE_ARM_UP = 0.4;
+
     public enum ArmState{
         DOWN,
         MIDDLE,
@@ -103,6 +107,8 @@ public class Intake {
     public void setArmLowerLimit(double lowerLimit){
         this.ARM_LOW_LIMIT = lowerLimit;
     }
+
+
     public ArmState getArmState(){
         return armState;
     }
@@ -111,16 +117,16 @@ public class Intake {
         colorSensor.showTelemetry(telemetry);
         switch(armState){
             case UP:
-                leftArmTarget = 0.47;
-                rightArmTarget = 0.47;
+                leftArmTarget = INTAKE_ARM_UP;
+                rightArmTarget = INTAKE_ARM_UP;
                 break;
             case DOWN:
                 leftArmTarget = ARM_LOW_LIMIT;
                 rightArmTarget = ARM_LOW_LIMIT;
                 break;
             case MIDDLE:
-                leftArmTarget = 0;
-                rightArmTarget = 0;
+                leftArmTarget = INTAKE_ARM_MID;
+                rightArmTarget = INTAKE_ARM_MID;
                 break;
         }
         telemetry.addData("ARM POS", getArmPos());
