@@ -205,7 +205,7 @@ public class PardusTeleOP extends OpMode {
     public static double SPECI_GEAR_OFFEST = 0.2;
 
     public static int POSITION_SCORE_1 = 1600; // 1750 // 2200
-    public static int POSITION_SCORE_2 = 2500;  // 2500
+    public static int POSITION_SCORE_2 = 2265;  // 2500
 //    public static int CLAW_RELEASE_TIMING_MS = 200; //???
     public static double WRIST_OFFSET = 0.1;
     private void updateActions() {
