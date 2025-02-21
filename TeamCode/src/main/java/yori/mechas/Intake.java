@@ -99,7 +99,7 @@ public class Intake {
     }
 
     private ActionPopravka actionPopravka;
-    private double ARM_LOW_LIMIT = 0.5;
+    private double ARM_LOW_LIMIT = 0;
     public void setArmLowerLimit(double lowerLimit){
         this.ARM_LOW_LIMIT = lowerLimit;
     }
@@ -109,68 +109,23 @@ public class Intake {
     public void updateIntake(double voltage){
         boolean correctColor = colorSensor.updateColorSensor(alliance);
         colorSensor.showTelemetry(telemetry);
-//        if(scorerOp.wasJustPressed(GamepadKeys.Button.DPAD_UP)){
-//            if(armState == ArmState.DOWN){
-//                armState = ArmState.MIDDLE;
-//            }else if(armState == ArmState.MIDDLE){
-//                armState = ArmState.UP;
-//            }
-//        }
-//        if(scorerOp.wasJustPressed(GamepadKeys.Button.DPAD_DOWN)){
-//            if(armState == ArmState.MIDDLE){
-//                armState = ArmState.DOWN;
-//            }else if(armState == ArmState.UP){
-//                armState = ArmState.MIDDLE;
-//            }
-//        }
-        //TODO: REMOVE AFTER TESTING
-
         switch(armState){
             case UP:
-                leftArmTarget = 1;
-                rightArmTarget = 1;
+                leftArmTarget = 0.47;
+                rightArmTarget = 0.47;
                 break;
             case DOWN:
                 leftArmTarget = ARM_LOW_LIMIT;
                 rightArmTarget = ARM_LOW_LIMIT;
                 break;
             case MIDDLE:
-                leftArmTarget = 0.5;
-                rightArmTarget = 0.5;
+                leftArmTarget = 0;
+                rightArmTarget = 0;
                 break;
         }
         telemetry.addData("ARM POS", getArmPos());
         leftIntakeArm.setPosition(leftArmTarget);
         rightIntakeArm.setPosition(rightArmTarget);
-//        if(scorerOp.wasJustReleased(GamepadKeys.Button.DPAD_UP)){
-//            if(leftArmTarget <= 0 ){
-//                leftArmTarget += 1;
-//            }
-//            if(rightArmTarget <= 0 ){
-//                rightArmTarget += 1;
-//            }
-//        }
-//        if(scorerOp.wasJustReleased(GamepadKeys.Button.DPAD_DOWN)){
-//            if(leftArmTarget >= 0 ){
-//                leftArmTarget -= 1;
-//            }
-//            if(rightArmTarget >= 0 ){
-//                rightArmTarget -= 1;
-//            }
-//        }
-//        if(scorerOp.wasJustReleased(GamepadKeys.Button.X)){
-////            isIntakeActive = !isIntakeActive;
-//            rollerState = RollerState.INTAKE;
-//        }
-//        if(correctColor){
-//            rollerState = RollerState.HOLD;
-//        }else{
-//            if(colorSensor.getDistance() < 6.0){
-//                rollerState = RollerState.REJECT;
-//            }else{
-//                rollerState = RollerState.INTAKE;
-//            }
-//        }
         telemetry.addData("NEED_POPRAVKA?", NEED_PORPAVKA);
         switch(rollerState){
             case INTAKE:
@@ -178,9 +133,6 @@ public class Intake {
                 rightIntakeRoller.set(1);
                 //new:
                 armState = ArmState.DOWN;
-//                if(scorerOp.wasJustPressed(GamepadKeys.Button.X)){
-//                    rollerState = RollerState.HOLD;
-//                }
                 if(correctColor){
                     rollerState = RollerState.HOLD;
                 }else if(colorSensor.getDistance() <= 2.4){
@@ -189,8 +141,6 @@ public class Intake {
                 NEED_PORPAVKA = true;
                 break;
             case HOLD:
-                double elapsedTime = popravlyalkaTimer.milliseconds() / 1000.0;
-                popravlyalkaTimer.reset();
                 armState = ArmState.UP; //new
 //                leftIntakeRoller.stopMotor();
 //                if(scorerOp.isDown(GamepadKeys.Button.LEFT_BUMPER)){
