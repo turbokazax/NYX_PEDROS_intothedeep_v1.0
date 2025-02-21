@@ -50,15 +50,22 @@ public class ActionSpecimens {
 
     private int POSITION_SCORE_1;
     private int POSITION_SCORE_2;
+
+    private int POSITION_SCORE_0; // position for picking up specimens
+
 //    private double CLAW_RELEASE_TIMING_MS = 200; // ms
 
     private double WRIST_OFFSET = 0;
+    private double SPECI_SERVO_POS_0 = 0;
 
-    public void setConstants(int POSITION_SCORE_1, int POSITION_SCORE_2, double WRIST_OFFSET){
+    public void setConstants(int POSITION_SCORE_1, int POSITION_SCORE_2, int POSITION_SCORE_0, double WRIST_OFFSET, double SPECI_SERVO_POS_0){
         this.POSITION_SCORE_1 = POSITION_SCORE_1;
         this.POSITION_SCORE_2 = POSITION_SCORE_2;
+        this.POSITION_SCORE_0 = POSITION_SCORE_0;
 //        this.CLAW_RELEASE_TIMING_MS = CLAW_RELEASE_TIMING_MS;
         this.WRIST_OFFSET = WRIST_OFFSET;
+        this.SPECI_SERVO_POS_0 = SPECI_SERVO_POS_0;
+
     }
 
     public void update(GamepadEx scorerOp, Telemetry telemetry, double voltage) {
@@ -68,9 +75,10 @@ public class ActionSpecimens {
         }
         switch (sequenceState) {
             case PICK_FROM_HUMAN:
-                outtake.updateGearTarget(0);
-                outtake.updateWristTarget(0.15);
+                outtake.updateGearTarget(SPECI_SERVO_POS_0);
+                outtake.updateWristTarget(SPECI_SERVO_POS_0 + 0.15);
                 outtake.updateClawTarget(1);
+                lift.updateLiftTarget(POSITION_SCORE_0, 60);
                 if (scorerOp.wasJustPressed(GamepadKeys.Button.B) && isTimeElapsed(300, voltage)) {
                     outtake.updateClawTarget(0.518);
                     if (isTimeElapsed(150, voltage)) {

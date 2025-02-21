@@ -206,6 +206,8 @@ public class PardusTeleOP extends OpMode {
 
     public static int POSITION_SCORE_1 = 1600; // 1750 // 2200
     public static int POSITION_SCORE_2 = 2265;  // 2500
+    public static int POSITION_SCORE_0 = 0;
+    public static double SPECI_SERVO_POS_0 = 0.1;
 //    public static int CLAW_RELEASE_TIMING_MS = 200; //???
     public static double WRIST_OFFSET = 0.1;
     private void updateActions() {
@@ -214,7 +216,7 @@ public class PardusTeleOP extends OpMode {
 //        actionTransfer.updateDeltaTime(deltaTime);
         actionSpecimens.update(scorerOp, telemetry, getBatteryVoltage());
         actionSpecimens.setSPECI_GEAR_OFFEST(SPECI_GEAR_OFFEST);
-        actionSpecimens.setConstants(POSITION_SCORE_1, POSITION_SCORE_2, WRIST_OFFSET);
+        actionSpecimens.setConstants(POSITION_SCORE_1, POSITION_SCORE_2, POSITION_SCORE_0, WRIST_OFFSET, SPECI_SERVO_POS_0);
         //
         actionScoreHighBasket.update(scorerOp, telemetry, getBatteryVoltage());
         actionIntakeInChamber.update(scorerOp, driverOp, telemetry, getBatteryVoltage(), actionTransfer);
