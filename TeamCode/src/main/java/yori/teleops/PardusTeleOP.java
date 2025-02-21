@@ -400,7 +400,7 @@ public class PardusTeleOP extends OpMode {
         lift.prostoGiveTelemetry(telemetry);
     }
 
-    public static double HORIZ_KP = 0.0026;
+    public static double HORIZ_KP = 0.0023;
     public static double HORIZ_KI = 0.0;
     public static double HORIZ_KD = 0.0;
     public static int HORIZ_SPEED = 2500;
