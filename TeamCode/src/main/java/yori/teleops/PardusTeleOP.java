@@ -200,23 +200,39 @@ public class PardusTeleOP extends OpMode {
     }
 
     public static double deltaTime = 450;
-    public static double GEAR_OFFSET = 0.17
-            ;
-    public static double SPECI_GEAR_OFFEST = 0.2;
-
-    public static int POSITION_SCORE_1 = 1600; // 1750 // 2200
-    public static int POSITION_SCORE_2 = 2265;  // 2500
+    public static int TRANSFER_TIMER_0 = 150;
+    public static int TRANSFER_TIMER_1 = 1;
+    public static int TRANSFER_TIMER_2 = 1;
+    public static int TRANSFER_TIMER_3 = 10;
+    public static double GEAR_OFFSET = 0.17;
+    public static double WRIST_TARGET_TRANSFER = 0;
+    public static double SPECI_GEAR_OFFEST = 0.8; //OBSOLETE
+// Lift Positions for Specimen
+    public static int POSITION_SCORE_1 = 1650;
+    public static int POSITION_SCORE_2 = 2265;
     public static int POSITION_SCORE_0 = 0;
-    public static double SPECI_SERVO_POS_0 = 0.1;
-//    public static int CLAW_RELEASE_TIMING_MS = 200; //???
-    public static double WRIST_OFFSET = 0.1;
+//  Positions for Specimens
+    public static double SPECI_GEAR_POS_0 = 0.87;
+    public static double SPECI_GEAR_POS_1 = 0.13;
+    public static double SPECI_WRIST_POS_0_OFFSET = -0.63;
+    public static double SPECI_WRIST_POS_1 = 0.07;
+    public static int SPECI_HANG_GEAR_AFTER_RELEASE_TIMER = 10;
+
+// outtake positions
+    public static double GEAR_MIDDLE = 0.5;
+    public static double GEAR_TARGET_INERTIA_1 = 0.35;
+    public static double GEAR_TARGET_INERTIA_2 = 0.8;
+    public static double GEAR_TARGET_TRANSFER = 0.13;
+    public static double GEAR_TARGET_HB = 0.55;
+    public static int INERTIA_TIMER_1 = 50;
+
     private void updateActions() {
         actionTransfer.update(scorerOp, telemetry, getBatteryVoltage());
-        actionTransfer.updateConstants(GEAR_OFFSET);
+        actionTransfer.updateConstants(GEAR_OFFSET, GEAR_MIDDLE, GEAR_TARGET_INERTIA_1, GEAR_TARGET_INERTIA_2, TRANSFER_TIMER_0, TRANSFER_TIMER_1, TRANSFER_TIMER_2, TRANSFER_TIMER_3, GEAR_TARGET_TRANSFER, GEAR_TARGET_HB, INERTIA_TIMER_1, WRIST_TARGET_TRANSFER);
 //        actionTransfer.updateDeltaTime(deltaTime);
         actionSpecimens.update(scorerOp, telemetry, getBatteryVoltage());
         actionSpecimens.setSPECI_GEAR_OFFEST(SPECI_GEAR_OFFEST);
-        actionSpecimens.setConstants(POSITION_SCORE_1, POSITION_SCORE_2, POSITION_SCORE_0, WRIST_OFFSET, SPECI_SERVO_POS_0);
+        actionSpecimens.setConstants(POSITION_SCORE_1, POSITION_SCORE_2, POSITION_SCORE_0, SPECI_WRIST_POS_0_OFFSET, SPECI_GEAR_POS_0, GEAR_MIDDLE, SPECI_GEAR_POS_1, SPECI_WRIST_POS_1, SPECI_HANG_GEAR_AFTER_RELEASE_TIMER);
         //
         actionScoreHighBasket.update(scorerOp, telemetry, getBatteryVoltage());
         actionIntakeInChamber.update(scorerOp, driverOp, telemetry, getBatteryVoltage(), actionTransfer);

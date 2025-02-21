@@ -251,6 +251,7 @@ public class ExampleBucketAuto extends OpMode {
         autonomousPathUpdate();
 
         // Feedback to Driver Hub
+        follower.telemetryDebug(telemetry);
         telemetry.addData("path state", pathState);
         telemetry.addData("x", follower.getPose().getX());
         telemetry.addData("y", follower.getPose().getY());

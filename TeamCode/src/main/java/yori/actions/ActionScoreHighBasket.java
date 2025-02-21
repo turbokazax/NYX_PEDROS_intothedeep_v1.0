@@ -9,6 +9,9 @@ import yori.mechas.Lift;
 import yori.mechas.Outtake;
 import yori.utils.LowVoltageAdapter;
 
+import static yori.actions.ActionTransfer.GEAR_MIDDLE;
+import static yori.actions.ActionTransfer.GEAR_TARGET_HB;
+
 public class ActionScoreHighBasket {
     private Lift lift;
     private Outtake outtake;
@@ -50,7 +53,7 @@ public class ActionScoreHighBasket {
             case MOVE_OUTTAKE_DOWN:
                 if(scorerOp.wasJustPressed(GamepadKeys.Button.A)){
                     outtake.updateWristTarget(0);
-                    outtake.updateGearTarget(0.4);
+                    outtake.updateGearTarget(GEAR_TARGET_HB);
                     outtake.updateClawTarget(1);
                     if(isTimeElapsed(1, voltage)) {
                         sequenceState = SequenceState.RELEASE_CLAW;
@@ -65,7 +68,7 @@ public class ActionScoreHighBasket {
                 }
                 break;
             case MOVE_OUTTAKE_UP:
-                outtake.updateGearTarget(0.5);
+                outtake.updateGearTarget(GEAR_MIDDLE);
                 outtake.updateWristTarget(0.15);
                 if(isTimeElapsed(200, voltage)){
                     sequenceState = SequenceState.MOVE_LIFT_DOWN;

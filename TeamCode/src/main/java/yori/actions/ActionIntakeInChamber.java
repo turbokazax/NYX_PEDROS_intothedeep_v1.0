@@ -1,6 +1,9 @@
 package yori.actions;
 
 import static yori.actions.ActionTransfer.GEAR_OFFSET;
+import static yori.actions.ActionTransfer.GEAR_TARGET_TRANSFER;
+import static yori.actions.ActionTransfer.GEAR_MIDDLE;
+
 
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
@@ -71,12 +74,12 @@ public class ActionIntakeInChamber {
 //                    if(scorerOp.wasJustPressed(GamepadKeys.Button.X)
                     if (scorerOp.wasJustReleased(GamepadKeys.Button.X)) {
 //                        if(intake.getRollerState() == Intake.RollerState.INTAKE && !scorerOp.wasJustReleased(GamepadKeys.Button.X)){
-//                            outtake.updateClawTarget(0.5);
+//                            outtake.updateClawTarget(GEAR_TARGET_TRANSFER);
 //                            outtake.updateWristTarget(0.15);
 //                            intake.setArmState(Intake.ArmState.MIDDLE);
 //                            intake.setRollerState(Intake.RollerState.HOLD);
 //                        }else{
-                        outtake.updateGearTarget(1 - GEAR_OFFSET);
+                        outtake.updateGearTarget(GEAR_TARGET_TRANSFER);
                         outtake.updateClawTarget(1);
                         outtake.updateWristTarget(0);
                         intake.setRollerState(Intake.RollerState.INTAKE);
@@ -103,7 +106,7 @@ public class ActionIntakeInChamber {
                     }
 
                     if (scorerOp.wasJustPressed(GamepadKeys.Button.DPAD_UP)) {
-                        outtake.updateGearTarget(1 - GEAR_OFFSET);
+                        outtake.updateGearTarget(GEAR_TARGET_TRANSFER);
                         outtake.updateWristTarget(0);
                         outtake.updateClawTarget(1);
                         prevState = SequenceState.HORIZ_ZERO;
@@ -119,7 +122,7 @@ public class ActionIntakeInChamber {
             case HORIZ_MID:
                 if (intake.getRollerState() == Intake.RollerState.HOLD) {
                     prevState = SequenceState.HORIZ_MID;
-                    outtake.updateGearTarget(1 - GEAR_OFFSET);
+                    outtake.updateGearTarget(GEAR_TARGET_TRANSFER);
                     intake.updateArmState(Intake.ArmState.MIDDLE);
                     sequenceState = SequenceState.HORIZ_ZERO;
                     actionTimer.reset();
@@ -144,7 +147,7 @@ public class ActionIntakeInChamber {
 //                if(horizSlides.updateHorizTarget(1600, 100)){
 //                    if (intake.getRollerState() == Intake.RollerState.HOLD) {
 //                        prevState = SequenceState.HORIZ_LONG;
-//                        outtake.updateGearTarget(1 - GEAR_OFFSET);
+//                        outtake.updateGearTarget(GEAR_TARGET_TRANSFER);
 //                        intake.updateArmState(Intake.ArmState.MIDDLE);
 //                        sequenceState = SequenceState.HORIZ_ZERO;
 //                        actionTimer.reset();
