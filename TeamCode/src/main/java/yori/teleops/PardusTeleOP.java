@@ -385,7 +385,7 @@ public class PardusTeleOP extends OpMode {
     public static double LIFT_FF = 0.0;
     public static int LIFT_SPEED = 300;
     public static int LIFT_MAX_SAFE_POS = 3500; // 3500
-    public static int LIFT_TARGET_HB = 3250; // 3350
+    public static int LIFT_TARGET_HB = 3465; // 3350
     public static int LIFT_MIN_POS = 0;
     public static int LIFT_TARGET = 0;
     public static int LIFT_TOLERANCE = 50;
