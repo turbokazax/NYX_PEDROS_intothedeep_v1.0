@@ -222,7 +222,7 @@ public class PardusTeleOP extends OpMode {
     public static double GEAR_MIDDLE = 0.5;
     public static double GEAR_TARGET_INERTIA_1 = 0.35;
     public static double GEAR_TARGET_INERTIA_2 = 0.8;
-    public static double GEAR_TARGET_TRANSFER = 0.13;
+    public static double GEAR_TARGET_TRANSFER = 0.12;
     public static double GEAR_TARGET_HB = 0.55;
     public static int INERTIA_TIMER_1 = 50;
 
