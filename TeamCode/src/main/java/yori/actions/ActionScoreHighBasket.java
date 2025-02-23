@@ -62,7 +62,7 @@ public class ActionScoreHighBasket {
                 }
                 break;
             case RELEASE_CLAW:
-                if(isTimeElapsed(500, voltage)){
+                if(isTimeElapsed(300, voltage)){
                     sequenceState = SequenceState.MOVE_OUTTAKE_UP;
                     actionTimer.reset();
                 }

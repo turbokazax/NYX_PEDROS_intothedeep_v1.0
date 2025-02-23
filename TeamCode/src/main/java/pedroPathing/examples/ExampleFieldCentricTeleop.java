@@ -1,5 +1,7 @@
 package pedroPathing.examples;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.Pose;
 import com.pedropathing.util.Constants;
@@ -24,6 +26,7 @@ public class ExampleFieldCentricTeleop extends OpMode {
     /** This method is call once when init is played, it initializes the follower **/
     @Override
     public void init() {
+        telemetry = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
         follower.setStartingPose(startPose);
@@ -58,7 +61,6 @@ public class ExampleFieldCentricTeleop extends OpMode {
         telemetry.addData("X", follower.getPose().getX());
         telemetry.addData("Y", follower.getPose().getY());
         telemetry.addData("Heading in Degrees", Math.toDegrees(follower.getPose().getHeading()));
-
         /* Update Telemetry to the Driver Hub */
         telemetry.update();
 

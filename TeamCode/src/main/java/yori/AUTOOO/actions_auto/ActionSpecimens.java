@@ -12,6 +12,12 @@ import yori.mechas.Outtake;
 public class ActionSpecimens {
     private Outtake outtake;
     private Lift lift;
+    public enum Actions{
+        PICK_FROM_HUMAN,
+        MOVE_LIFT_UP,
+        MOVE_OUTTAKE_UP
+
+    }
 
     private enum SequenceState {
         PICK_FROM_HUMAN,
@@ -49,30 +55,47 @@ public class ActionSpecimens {
         this.SPECI_GEAR_OFFEST = SPECI_GEAR_OFFEST;
     }
 
-    private int POSITION_SCORE_1 = 1400;
-    private int POSITION_SCORE_2 = 2500;
-    private double CLAW_RELEASE_TIMING_MS = 200; // ms
+    private int POSITION_SCORE_1;
+    private int POSITION_SCORE_2;
 
-    private double WRIST_OFFSET = 0;
+    private int POSITION_SCORE_0; // position for picking up specimens
 
-    public void setConstants(int POSITION_SCORE_1, int POSITION_SCORE_2, double WRIST_OFFSET){
+//    private double CLAW_RELEASE_TIMING_MS = 200; // ms
+
+    private double SPECI_WRIST_POS_0_OFFSET = 0;
+    private double SPECI_GEAR_POS_0 = 0;
+    private double GEAR_MIDDLE = 0;
+    private double SPECI_GEAR_POS_1 = 0;
+    private double SPECI_WRIST_POS_1 = 0;
+    private int SPECI_HANG_GEAR_AFTER_RELEASE_TIMER = 0;
+
+
+    public void setConstants(int POSITION_SCORE_1, int POSITION_SCORE_2, int POSITION_SCORE_0, double SPECI_WRIST_POS_0_OFFSET, double SPECI_GEAR_POS_0, double GEAR_MIDDLE, double SPECI_GEAR_POS_1, double SPECI_WRIST_POS_1, int SPECI_HANG_GEAR_AFTER_RELEASE_TIMER){
         this.POSITION_SCORE_1 = POSITION_SCORE_1;
         this.POSITION_SCORE_2 = POSITION_SCORE_2;
+        this.POSITION_SCORE_0 = POSITION_SCORE_0;
 //        this.CLAW_RELEASE_TIMING_MS = CLAW_RELEASE_TIMING_MS;
-        this.WRIST_OFFSET = WRIST_OFFSET;
+        this.SPECI_WRIST_POS_0_OFFSET = SPECI_WRIST_POS_0_OFFSET;
+        this.SPECI_GEAR_POS_0 = SPECI_GEAR_POS_0;
+        this.GEAR_MIDDLE = GEAR_MIDDLE;
+        this.SPECI_GEAR_POS_1 = SPECI_GEAR_POS_1;
+        this.SPECI_WRIST_POS_1 = SPECI_WRIST_POS_1;
+        this.SPECI_HANG_GEAR_AFTER_RELEASE_TIMER = SPECI_HANG_GEAR_AFTER_RELEASE_TIMER;
+
     }
 
-    public void update(GamepadEx scorerOp, Telemetry telemetry, double voltage) {
-        if (scorerOp.wasJustPressed(GamepadKeys.Button.B) && sequenceState == SequenceState.DISABLED) {
+    public void update(Actions action, Telemetry telemetry, double voltage) {
+        if (action == Actions.PICK_FROM_HUMAN && sequenceState == SequenceState.DISABLED) {
             actionTimer.reset();
             sequenceState = SequenceState.PICK_FROM_HUMAN;
         }
         switch (sequenceState) {
             case PICK_FROM_HUMAN:
-                outtake.updateGearTarget(0);
-                outtake.updateWristTarget(0.15);
+                outtake.updateGearTarget(SPECI_GEAR_POS_0);
+                outtake.updateWristTarget(SPECI_GEAR_POS_0 + SPECI_WRIST_POS_0_OFFSET);
                 outtake.updateClawTarget(1);
-                if (scorerOp.wasJustPressed(GamepadKeys.Button.B) && isTimeElapsed(300, voltage)) {
+                lift.updateLiftTarget(POSITION_SCORE_0, 60);
+                if (action== Actions.MOVE_LIFT_UP && isTimeElapsed(300, voltage)) {
                     outtake.updateClawTarget(0.518);
                     if (isTimeElapsed(150, voltage)) {
                         actionTimer.reset();
@@ -81,13 +104,13 @@ public class ActionSpecimens {
                 }
                 break;
             case MOVE_LIFT_UP:
-                outtake.updateGearTarget(1-SPECI_GEAR_OFFEST);
-                outtake.updateWristTarget(WRIST_OFFSET);
+                outtake.updateGearTarget(SPECI_GEAR_POS_1);
+                outtake.updateWristTarget(SPECI_WRIST_POS_1);
                 if (lift.updateLiftTarget(POSITION_SCORE_1, 60)) {
 //                    sequenceState = SequenceState.MOVE_OUTTAKE_DOWN;
 //                    outtake.updateGearTarget(0);
 //                    outtake.updateWristTarget(0);
-                    if(scorerOp.wasJustPressed(GamepadKeys.Button.B) && isTimeElapsed(10, voltage)){
+                    if(action == Actions.MOVE_OUTTAKE_UP&& isTimeElapsed(10, voltage)){
                         actionTimer.reset();
                         sequenceState = SequenceState.MOVE_OUTTAKE_UP;
                     }
@@ -117,7 +140,7 @@ public class ActionSpecimens {
             case MOVE_OUTTAKE_UP:
 
 //                outtake.updateWristTarget(0.15);
-////                outtake.updateGearTarget(0.5);
+////                outtake.updateGearTarget(GEAR_MIDDLE);
 //                if (isTimeElapsed(CLAW_RELEASE_TIMING_MS, voltage)) {
 //
 //                }
@@ -126,15 +149,18 @@ public class ActionSpecimens {
 //                    outtake.updateWristTarget(0);
                 }
                 if(lift.updateLiftTarget(POSITION_SCORE_2, 100)){
-                    outtake.updateGearTarget(0.5);
                     outtake.updateClawTarget(1);
-                    sequenceState = SequenceState.MOVE_LIFT_DOWN;
-                    actionTimer.reset();
+                    if(isTimeElapsed(SPECI_HANG_GEAR_AFTER_RELEASE_TIMER, voltage)) {
+                        outtake.updateGearTarget(GEAR_MIDDLE);
+
+                        sequenceState = SequenceState.MOVE_LIFT_DOWN;
+                        actionTimer.reset();
+                    }
                 }
                 break;
             case MOVE_LIFT_DOWN:
                 if (lift.updateLiftTarget(0, 50) && isTimeElapsed(1, voltage)) {
-                    outtake.updateWristTarget(0.15);
+                    outtake.updateWristTarget(0.5);
                     sequenceState = SequenceState.DISABLED;
                     actionTimer.reset();
                 }

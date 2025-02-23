@@ -200,10 +200,10 @@ public class PardusTeleOP extends OpMode {
     }
 
     public static double deltaTime = 450;
-    public static int TRANSFER_TIMER_0 = 150;
+    public static int TRANSFER_TIMER_0 = 160;
     public static int TRANSFER_TIMER_1 = 1;
     public static int TRANSFER_TIMER_2 = 1;
-    public static int TRANSFER_TIMER_3 = 10;
+    public static int TRANSFER_TIMER_3 = 150;
     public static double GEAR_OFFSET = 0.17;
     public static double WRIST_TARGET_TRANSFER = 0;
     public static double SPECI_GEAR_OFFEST = 0.8; //OBSOLETE
@@ -212,7 +212,7 @@ public class PardusTeleOP extends OpMode {
     public static int POSITION_SCORE_2 = 2265;
     public static int POSITION_SCORE_0 = 0;
 //  Positions for Specimens
-    public static double SPECI_GEAR_POS_0 = 0.87;
+    public static double SPECI_GEAR_POS_0 = 0.8;
     public static double SPECI_GEAR_POS_1 = 0.13;
     public static double SPECI_WRIST_POS_0_OFFSET = -0.63;
     public static double SPECI_WRIST_POS_1 = 0.07;
@@ -222,10 +222,9 @@ public class PardusTeleOP extends OpMode {
     public static double GEAR_MIDDLE = 0.5;
     public static double GEAR_TARGET_INERTIA_1 = 0.35;
     public static double GEAR_TARGET_INERTIA_2 = 0.8;
-    public static double GEAR_TARGET_TRANSFER = 0.12;
-    public static double GEAR_TARGET_HB = 0.55;
+    public static double GEAR_TARGET_TRANSFER = 0.11;
+    public static double GEAR_TARGET_HB = 0.58;
     public static int INERTIA_TIMER_1 = 50;
-
     private void updateActions() {
         actionTransfer.update(scorerOp, telemetry, getBatteryVoltage());
         actionTransfer.updateConstants(GEAR_OFFSET, GEAR_MIDDLE, GEAR_TARGET_INERTIA_1, GEAR_TARGET_INERTIA_2, TRANSFER_TIMER_0, TRANSFER_TIMER_1, TRANSFER_TIMER_2, TRANSFER_TIMER_3, GEAR_TARGET_TRANSFER, GEAR_TARGET_HB, INERTIA_TIMER_1, WRIST_TARGET_TRANSFER);
@@ -420,7 +419,7 @@ public class PardusTeleOP extends OpMode {
     public static double HORIZ_KI = 0.0;
     public static double HORIZ_KD = 0.0;
     public static int HORIZ_SPEED = 2500;
-    public static int HORIZ_MAX_SAFE_LIMIT = 2000;
+    public static int HORIZ_MAX_SAFE_LIMIT = 1700;
     public static int HORIZ_MIN_LIMIT = 0;
 
     public static int HORIZ_TARGET = 0;

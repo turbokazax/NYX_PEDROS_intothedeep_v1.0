@@ -1,3 +1,4 @@
+/**
 package yori.AUTOOO;
 
 import com.acmerobotics.dashboard.FtcDashboard;
@@ -18,6 +19,7 @@ import com.qualcomm.robotcore.hardware.VoltageSensor;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 import yori.AUTOOO.actions_auto.ActionIntakeInChamber;
+import yori.AUTOOO.actions_auto.ActionScoreHighBasket;
 import yori.AUTOOO.actions_auto.ActionTransfer;
 import yori.mechas.HorizSlides;
 import yori.mechas.Intake;
@@ -37,25 +39,60 @@ public class TEST extends OpMode {
     private ActionTransfer actionTransfer;
     private ActionIntakeInChamber actionIntakeInChamber;
 
-    /** Define Poses **/
-    private final Pose startPose = new Pose(8.354, 101.635, Math.toRadians(0));
-    private final Pose midPose = new Pose(24.663, 120.133, Math.toRadians(0));
-    private final Pose finalPose = new Pose(14.320, 130.475, Math.toRadians(0));
+    public static double poses[][] = {
+            {0,0},
+            {0,0},
+            {0,0},
+            {0,0},
+            {0,0},
+            {0,0},
+            {0,0},
+            {0,0},
+            {0,0},
+            {0,0},
+            {0,0}
 
-    /** Define Paths and PathChains **/
-    private Path path1;
-    private PathChain line2;
+    };
 
-    /** Build the paths for the auto **/
+
+    private final Pose startPose = new Pose(poses[0][0],poses[0][1], 0);
+    private final Pose score = new Pose(poses[1][0], poses[1][1], -45);
+    private final Pose take1 = new Pose(poses[2][0], poses[2][1],0);
+    private final Pose take2 = new Pose(poses[3][0],poses[3][1],0);
+    private final Pose take3 = new Pose(poses[4][0],poses[4][1],0);
+    private final Pose control = new Pose(poses[5][0],poses[5][1]);
+    private final Pose park = new Pose(poses[6][0], poses[6][1], 90);
+
+
+    private Path starting, taking1, scoring1, taking2, scoring2, taking3, scoring3, parking;
+
     public void buildPaths() {
-        path1 = new Path(new BezierLine(new Point(startPose), new Point(midPose)));
-        path1.setLinearHeadingInterpolation(startPose.getHeading(), midPose.getHeading());
 
-        line2 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(midPose), new Point(finalPose)))
-                .setTangentHeadingInterpolation()
-                .setReversed(true)
-                .build();
+        starting = new Path(new BezierLine(startPose, score));
+        starting.setLinearHeadingInterpolation(startPose.getHeading(), score.getHeading());
+
+        taking1 = new Path(new BezierLine(score, take1));
+        taking1.setLinearHeadingInterpolation(score.getHeading(), take1.getHeading());
+
+        scoring1 = new Path(new BezierLine(take1, score));
+        scoring1.setLinearHeadingInterpolation(take1.getHeading(), score.getHeading());
+
+        scoring2 = new Path(new BezierLine(take2, score));
+        scoring2.setLinearHeadingInterpolation(take2.getHeading(), score.getHeading());
+
+        scoring3 = new Path(new BezierLine(take3, score));
+        scoring3.setLinearHeadingInterpolation(take3.getHeading(), score.getHeading());
+
+        taking2 = new Path(new BezierLine(score, take2));
+        taking2.setLinearHeadingInterpolation(score.getHeading(), take2.getHeading());
+
+        taking3 = new Path(new BezierLine(score, take3));
+        taking3.setLinearHeadingInterpolation(score.getHeading(), take3.getHeading());
+
+
+        parking = new Path(new BezierCurve(score,control,park));
+        parking.setLinearHeadingInterpolation(score.getHeading(),park.getHeading());
+
     }
 
     public static int pathState = 0;
@@ -65,31 +102,51 @@ public class TEST extends OpMode {
         pathTimer.resetTimer();
     }
 
-    public void autoPathUpdate() {
+    public void autonomousPathUpdate() {
         switch (pathState) {
             case 0:
-                follower.followPath(path1);
+                follower.followPath(starting, true);
                 setPathState(1);
                 break;
             case 1:
-                if (!follower.isBusy()) {
-                    actionIntakeInChamber.setSequenceState(ActionIntakeInChamber.SequenceState.HORIZ_MID);
-                    if (actionTransfer.isTransferRunning()) {
-                        setPathState(2);
-                    }
-                }
+                if(!follower.isBusy())
+                    follower.followPath(taking1, true);
+                    ActionTransfer.
+//                    setPathState(2);
                 break;
             case 2:
-                if (!follower.isBusy()) {
-                    follower.followPath(line2, true);
-                }
+                follower.followPath(scoring1, true);
+                setPathState(3);
+                break;
+            case 3:
+                follower.followPath(taking2, true);
+                setPathState(4);
+                break;
+            case 4:
+                follower.followPath(scoring2, true);
+
+                setPathState(5);
+                break;
+            case 5:
+                follower.followPath(taking3, true);
+
+                setPathState(6);
+                break;
+            case 6:
+                follower.followPath(scoring3, true);
+
+                setPathState(7);
+                break;
+            case 7:
+                follower.followPath(parking, true);
+
+                setPathState(-1);
                 break;
         }
     }
-
     @Override
     public void loop() {
-        autoPathUpdate();
+        autonomousPathUpdate();
         updateActions();
         updateMechas();
 
@@ -97,6 +154,8 @@ public class TEST extends OpMode {
         telemetry.addData("x", follower.getPose().getX());
         telemetry.addData("y", follower.getPose().getY());
         telemetry.addData("heading", follower.getPose().getHeading());
+        follower.telemetryDebug(telemetry);
+
         telemetry.update();
     }
 
@@ -145,3 +204,4 @@ public class TEST extends OpMode {
         return result;
     }
 }
+**/

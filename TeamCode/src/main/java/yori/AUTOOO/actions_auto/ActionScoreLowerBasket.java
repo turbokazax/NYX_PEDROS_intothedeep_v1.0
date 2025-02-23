@@ -12,6 +12,10 @@ import yori.mechas.Outtake;
 public class ActionScoreLowerBasket {
     private Lift lift;
     private Outtake outtake;
+    public enum Actions{
+        MOVE_LIFT_UP,
+
+    }
     private enum SequenceState{
         MOVE_LIFT_UP,
         MOVE_OUTTAKE_DOWN,
@@ -35,8 +39,8 @@ public class ActionScoreLowerBasket {
         return actionElapsedTime >= time * (12.0 / voltage);
     }
 
-    public void update(GamepadEx scorerOp, Telemetry telemetry, double voltage){
-        if(scorerOp.wasJustPressed(GamepadKeys.Button.DPAD_LEFT) && sequenceState == SequenceState.DISABLED){
+    public void update(Actions action, Telemetry telemetry, double voltage){
+        if(action == Actions.MOVE_LIFT_UP&& sequenceState == SequenceState.DISABLED){
             actionTimer.reset();
             sequenceState = SequenceState.MOVE_LIFT_UP;
         }
